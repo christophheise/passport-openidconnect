@@ -12,20 +12,19 @@
     "identity"
   ],
   "author": {
-    "name": "Jared Hanson",
-    "email": "jaredhanson@gmail.com",
-    "url": "https://www.jaredhanson.me/"
+    "name": "Christoph Heise",
+    "email": "christoph.heise@dsign-systems.net"
   },
+  "contributors": [
+    {
+      "name": "Jared Hanson",
+      "email": "jaredhanson@gmail.com",
+      "url": "https://www.jaredhanson.me/"
+    }
+  ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/jaredhanson/passport-openidconnect.git"
-  },
-  "bugs": {
-    "url": "https://github.com/jaredhanson/passport-openidconnect/issues"
-  },
-  "funding": {
-    "type": "github",
-    "url": "https://github.com/sponsors/jaredhanson"
+    "url": "git://github.com/christophheise/passport-openidconnect.git"
   },
   "license": "MIT",
   "licenses": [
