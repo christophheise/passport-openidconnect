@@ -10,11 +10,11 @@ var InternalOAuthError = require('../lib/errors/internaloautherror');
 
 describe('Strategy', function() {
   var clock;
-  
+
   beforeEach(function() {
     clock = sinon.useFakeTimers(1311280970000);
   });
-  
+
   afterEach(function() {
     clock.restore();
   });
@@ -28,7 +28,7 @@ describe('Strategy', function() {
       clientID: 's6BhdRkqt3',
       clientSecret: 'some_secret12345'
     }, function() {});
-    
+
     expect(strategy.name).to.equal('openidconnect');
   });
 
@@ -40,7 +40,7 @@ describe('Strategy', function() {
       clientID: 's6BhdRkqt3',
       clientSecret: 'some_secret12345'
     }, function() {});
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.session = {};
@@ -48,7 +48,7 @@ describe('Strategy', function() {
       .redirect(function(url) {
         var l = uri.parse(url, true);
         var state = l.query.state;
-        
+
         expect(url).to.equal('https://server.example.com/authorize?response_type=code&client_id=s6BhdRkqt3&scope=openid&state=' + encodeURIComponent(state));
         expect(state).to.have.length(24);
         expect(this.session['openidconnect:server.example.com'].state).to.deep.equal({
@@ -59,7 +59,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should redirect without redirect URI
-  
+
   it('should redirect with redirect URI', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -69,7 +69,7 @@ describe('Strategy', function() {
       clientSecret: 'some_secret12345',
       callbackURL: 'https://client.example.org/cb',
     }, function() {});
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.session = {};
@@ -77,7 +77,7 @@ describe('Strategy', function() {
       .redirect(function(url) {
         var l = uri.parse(url, true);
         var state = l.query.state;
-        
+
         expect(url).to.equal('https://server.example.com/authorize?response_type=code&client_id=s6BhdRkqt3&redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&scope=openid&state=' + encodeURIComponent(state));
         expect(state).to.have.length(24);
         expect(this.session['openidconnect:server.example.com'].state).to.deep.equal({
@@ -88,7 +88,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should redirect with redirect URI
-  
+
   it('should redirect with relative redirect URI', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -109,7 +109,7 @@ describe('Strategy', function() {
       .redirect(function(url) {
         var l = uri.parse(url, true);
         var state = l.query.state;
-        
+
         expect(url).to.equal('https://server.example.com/authorize?response_type=code&client_id=s6BhdRkqt3&redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&scope=openid&state=' + encodeURIComponent(state));
         expect(state).to.have.length(24);
         expect(this.session['openidconnect:server.example.com'].state).to.deep.equal({
@@ -120,7 +120,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should redirect with relative redirect URI
-  
+
   it('should redirect with scope as array', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -131,7 +131,7 @@ describe('Strategy', function() {
       callbackURL: 'https://client.example.org/cb',
       scope: [ 'profile', 'email' ]
     }, function() {});
-  
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.session = {};
@@ -139,7 +139,7 @@ describe('Strategy', function() {
       .redirect(function(url) {
         var l = uri.parse(url, true);
         var state = l.query.state;
-        
+
         expect(url).to.equal('https://server.example.com/authorize?response_type=code&client_id=s6BhdRkqt3&redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&scope=openid%20profile%20email&state=' + encodeURIComponent(state));
         expect(state).to.have.length(24);
         expect(this.session['openidconnect:server.example.com'].state).to.deep.equal({
@@ -150,7 +150,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should redirect with scope as array
-  
+
   it('should redirect with scope as string', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -161,7 +161,7 @@ describe('Strategy', function() {
       callbackURL: 'https://client.example.org/cb',
       scope: 'profile email'
     }, function() {});
-  
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.session = {};
@@ -169,7 +169,7 @@ describe('Strategy', function() {
       .redirect(function(url) {
         var l = uri.parse(url, true);
         var state = l.query.state;
-        
+
         expect(url).to.equal('https://server.example.com/authorize?response_type=code&client_id=s6BhdRkqt3&redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&scope=openid%20profile%20email&state=' + encodeURIComponent(state));
         expect(state).to.have.length(24);
         expect(this.session['openidconnect:server.example.com'].state).to.deep.equal({
@@ -180,7 +180,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should redirect with scope as string
-  
+
   it('should redirect with response mode parameter', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -191,7 +191,7 @@ describe('Strategy', function() {
       callbackURL: 'https://client.example.org/cb',
       responseMode: 'form_post'
     }, function() {});
-  
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.session = {};
@@ -199,7 +199,7 @@ describe('Strategy', function() {
       .redirect(function(url) {
         var l = uri.parse(url, true);
         var state = l.query.state;
-        
+
         expect(url).to.equal('https://server.example.com/authorize?response_type=code&response_mode=form_post&client_id=s6BhdRkqt3&redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&scope=openid&state=' + encodeURIComponent(state));
         expect(state).to.have.length(24);
         expect(this.session['openidconnect:server.example.com'].state).to.deep.equal({
@@ -210,7 +210,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should redirect with response mode parameter
-  
+
   it('should redirect with prompt parameter', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -221,7 +221,7 @@ describe('Strategy', function() {
       callbackURL: 'https://client.example.org/cb',
       prompt: 'login'
     }, function() {});
-  
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.session = {};
@@ -229,7 +229,7 @@ describe('Strategy', function() {
       .redirect(function(url) {
         var l = uri.parse(url, true);
         var state = l.query.state;
-        
+
         expect(url).to.equal('https://server.example.com/authorize?response_type=code&client_id=s6BhdRkqt3&redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&scope=openid&prompt=login&state=' + encodeURIComponent(state));
         expect(state).to.have.length(24);
         expect(this.session['openidconnect:server.example.com'].state).to.deep.equal({
@@ -240,7 +240,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should redirect with prompt parameter
-  
+
   it('should redirect with prompt parameter set to extension value', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -251,7 +251,7 @@ describe('Strategy', function() {
       callbackURL: 'https://client.example.org/cb',
       prompt: 'x-example'
     }, function() {});
-  
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.session = {};
@@ -259,7 +259,7 @@ describe('Strategy', function() {
       .redirect(function(url) {
         var l = uri.parse(url, true);
         var state = l.query.state;
-        
+
         expect(url).to.equal('https://server.example.com/authorize?response_type=code&client_id=s6BhdRkqt3&redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&scope=openid&prompt=x-example&state=' + encodeURIComponent(state));
         expect(state).to.have.length(24);
         expect(this.session['openidconnect:server.example.com'].state).to.deep.equal({
@@ -270,7 +270,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should redirect with prompt parameter set to extension value
-  
+
   it('should redirect with display parameter', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -281,7 +281,7 @@ describe('Strategy', function() {
       callbackURL: 'https://client.example.org/cb',
       display: 'touch'
     }, function() {});
-  
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.session = {};
@@ -289,7 +289,7 @@ describe('Strategy', function() {
       .redirect(function(url) {
         var l = uri.parse(url, true);
         var state = l.query.state;
-        
+
         expect(url).to.equal('https://server.example.com/authorize?response_type=code&client_id=s6BhdRkqt3&redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&scope=openid&display=touch&state=' + encodeURIComponent(state));
         expect(state).to.have.length(24);
         expect(this.session['openidconnect:server.example.com'].state).to.deep.equal({
@@ -300,7 +300,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should redirect with display parameter
-  
+
   it('should redirect with display parameter set to extension value', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -311,7 +311,7 @@ describe('Strategy', function() {
       callbackURL: 'https://client.example.org/cb',
       display: 'x-example'
     }, function() {});
-  
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.session = {};
@@ -319,7 +319,7 @@ describe('Strategy', function() {
       .redirect(function(url) {
         var l = uri.parse(url, true);
         var state = l.query.state;
-        
+
         expect(url).to.equal('https://server.example.com/authorize?response_type=code&client_id=s6BhdRkqt3&redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&scope=openid&display=x-example&state=' + encodeURIComponent(state));
         expect(state).to.have.length(24);
         expect(this.session['openidconnect:server.example.com'].state).to.deep.equal({
@@ -330,7 +330,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should redirect with display parameter set to extension value
-  
+
   it('should redirect with UI locales parameter', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -339,9 +339,10 @@ describe('Strategy', function() {
       clientID: 's6BhdRkqt3',
       clientSecret: 'some_secret12345',
       callbackURL: 'https://client.example.org/cb',
-      uiLocales: 'fr-CA fr en'
+      uiLocales: 'fr-CA fr en',
+      redirectQueries: []
     }, function() {});
-  
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.session = {};
@@ -349,7 +350,7 @@ describe('Strategy', function() {
       .redirect(function(url) {
         var l = uri.parse(url, true);
         var state = l.query.state;
-        
+
         expect(url).to.equal('https://server.example.com/authorize?response_type=code&client_id=s6BhdRkqt3&redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&scope=openid&ui_locales=fr-CA%20fr%20en&state=' + encodeURIComponent(state));
         expect(state).to.have.length(24);
         expect(this.session['openidconnect:server.example.com'].state).to.deep.equal({
@@ -360,7 +361,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should redirect with UI locales parameter
-  
+
   it('should redirect with login hint parameter', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -371,7 +372,7 @@ describe('Strategy', function() {
       callbackURL: 'https://client.example.org/cb',
       loginHint: 'janedoe@example.com'
     }, function() {});
-  
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.session = {};
@@ -379,7 +380,7 @@ describe('Strategy', function() {
       .redirect(function(url) {
         var l = uri.parse(url, true);
         var state = l.query.state;
-        
+
         expect(url).to.equal('https://server.example.com/authorize?response_type=code&client_id=s6BhdRkqt3&redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&scope=openid&login_hint=janedoe%40example.com&state=' + encodeURIComponent(state));
         expect(state).to.have.length(24);
         expect(this.session['openidconnect:server.example.com'].state).to.deep.equal({
@@ -390,7 +391,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should redirect with login hint parameter
-  
+
   it('should redirect with max age parameter', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -401,7 +402,7 @@ describe('Strategy', function() {
       callbackURL: 'https://client.example.org/cb',
       maxAge: 86400
     }, function() {});
-  
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.session = {};
@@ -409,7 +410,7 @@ describe('Strategy', function() {
       .redirect(function(url) {
         var l = uri.parse(url, true);
         var state = l.query.state;
-        
+
         expect(url).to.equal('https://server.example.com/authorize?response_type=code&client_id=s6BhdRkqt3&redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&scope=openid&max_age=86400&state=' + encodeURIComponent(state));
         expect(state).to.have.length(24);
         expect(this.session['openidconnect:server.example.com'].state).to.deep.equal({
@@ -422,7 +423,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should redirect with max age parameter
-  
+
   it('should redirect with authentication context class reference values parameter', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -433,7 +434,7 @@ describe('Strategy', function() {
       callbackURL: 'https://client.example.org/cb',
       acrValues: 'urn:mace:incommon:iap:silver'
     }, function() {});
-  
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.session = {};
@@ -441,7 +442,7 @@ describe('Strategy', function() {
       .redirect(function(url) {
         var l = uri.parse(url, true);
         var state = l.query.state;
-        
+
         expect(url).to.equal('https://server.example.com/authorize?response_type=code&client_id=s6BhdRkqt3&redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&scope=openid&acr_values=urn%3Amace%3Aincommon%3Aiap%3Asilver&state=' + encodeURIComponent(state));
         expect(state).to.have.length(24);
         expect(this.session['openidconnect:server.example.com'].state).to.deep.equal({
@@ -452,7 +453,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should redirect with authentication context class reference values parameter
-  
+
   it('should redirect with ID token hint parameter', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -463,7 +464,7 @@ describe('Strategy', function() {
       callbackURL: 'https://client.example.org/cb',
       idTokenHint: 'eyJh.ewogImlzcyI6ICJo.ggW8hZ1E'
     }, function() {});
-  
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.session = {};
@@ -471,7 +472,7 @@ describe('Strategy', function() {
       .redirect(function(url) {
         var l = uri.parse(url, true);
         var state = l.query.state;
-        
+
         expect(url).to.equal('https://server.example.com/authorize?response_type=code&client_id=s6BhdRkqt3&redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&scope=openid&id_token_hint=eyJh.ewogImlzcyI6ICJo.ggW8hZ1E&state=' + encodeURIComponent(state));
         expect(state).to.have.length(24);
         expect(this.session['openidconnect:server.example.com'].state).to.deep.equal({
@@ -482,7 +483,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should redirect with ID token hint parameter
-  
+
   it('should redirect with nonce parameter', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -493,7 +494,7 @@ describe('Strategy', function() {
       callbackURL: 'https://client.example.org/cb',
       nonce: true
     }, function() {});
-  
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.session = {};
@@ -502,7 +503,7 @@ describe('Strategy', function() {
         var l = uri.parse(url, true);
         var state = l.query.state;
         var nonce = l.query.nonce;
-        
+
         expect(url).to.equal('https://server.example.com/authorize?response_type=code&client_id=s6BhdRkqt3&redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&scope=openid&nonce=' + encodeURIComponent(nonce) + '&state=' + encodeURIComponent(state));
         expect(state).to.have.length(24);
         expect(this.session['openidconnect:server.example.com'].state).to.deep.equal({
@@ -530,7 +531,7 @@ describe('Strategy', function() {
         }
       }
     }, function() {});
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.session = {};
@@ -538,7 +539,7 @@ describe('Strategy', function() {
       .redirect(function(url) {
         var l = uri.parse(url, true);
         var state = l.query.state;
-        
+
         expect(url).to.equal('https://server.example.com/authorize?response_type=code&client_id=s6BhdRkqt3&redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&scope=openid&claims=%7B%22userinfo%22%3A%7B%22email%22%3Anull%2C%22email_verified%22%3Anull%7D%7D&state=' + encodeURIComponent(state));
         expect(state).to.have.length(24);
         expect(this.session['openidconnect:server.example.com'].state).to.deep.equal({
@@ -549,7 +550,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should redirect with claims parameter
-  
+
   it('should authenticate request', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -563,7 +564,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       return cb(null, { id: '248289761001' });
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600,
@@ -579,7 +580,7 @@ describe('Strategy', function() {
         secret: 'keyboard cat',
       })
     });
-    
+
     sinon.stub(strategy._oauth2, 'get').yieldsAsync(null, JSON.stringify({
       sub: '248289761001',
       name: 'Jane Doe',
@@ -589,7 +590,7 @@ describe('Strategy', function() {
       email: 'janedoe@example.com',
       picture: 'http://example.com/janedoe/me.jpg'
     }));
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -606,22 +607,22 @@ describe('Strategy', function() {
       .success(function(user, info) {
         expect(user).to.deep.equal({ id: '248289761001' });
         expect(info).to.deep.equal({});
-        
+
         expect(strategy._oauth2.getOAuthAccessToken.calledOnce).to.be.true;
         expect(strategy._oauth2.getOAuthAccessToken.getCall(0).args[0]).to.equal('SplxlOBeZQQYbYS6WxSbIA');
         expect(strategy._oauth2.getOAuthAccessToken.getCall(0).args[1]).to.deep.equal({
           grant_type: 'authorization_code',
           redirect_uri: 'https://client.example.org/cb'
         });
-        
+
         expect(strategy._oauth2.get.calledOnce).to.be.false;
-        
+
         done();
       })
       .error(done)
       .authenticate();
   }); // should authenticate request
-  
+
   it('should authenticate request where audience claim contains the client ID value and authorized party claim matches client ID', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -635,7 +636,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       return cb(null, { id: '248289761001' });
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600,
@@ -652,7 +653,7 @@ describe('Strategy', function() {
         secret: 'keyboard cat',
       })
     });
-    
+
     sinon.stub(strategy._oauth2, 'get').yieldsAsync(null, JSON.stringify({
       sub: '248289761001',
       name: 'Jane Doe',
@@ -662,7 +663,7 @@ describe('Strategy', function() {
       email: 'janedoe@example.com',
       picture: 'http://example.com/janedoe/me.jpg'
     }));
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -684,7 +685,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should authenticate request where audience claim contains the client ID value and authorized party claim matches client ID
-  
+
   it('should authenticate request where time when authentication occurred is recent enough', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -698,7 +699,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       return cb(null, { id: '248289761001' });
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600,
@@ -715,7 +716,7 @@ describe('Strategy', function() {
         secret: 'keyboard cat',
       })
     });
-    
+
     sinon.stub(strategy._oauth2, 'get').yieldsAsync(null, JSON.stringify({
       sub: '248289761001',
       name: 'Jane Doe',
@@ -725,7 +726,7 @@ describe('Strategy', function() {
       email: 'janedoe@example.com',
       picture: 'http://example.com/janedoe/me.jpg'
     }));
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -749,7 +750,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should authenticate request where time when authentication occurred is recent enough
-  
+
   it('should authenticate request with application-supplied state', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -763,7 +764,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       return cb(null, { id: '248289761001' });
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600,
@@ -779,7 +780,7 @@ describe('Strategy', function() {
         secret: 'keyboard cat',
       })
     });
-    
+
     sinon.stub(strategy._oauth2, 'get').yieldsAsync(null, JSON.stringify({
       sub: '248289761001',
       name: 'Jane Doe',
@@ -789,7 +790,7 @@ describe('Strategy', function() {
       email: 'janedoe@example.com',
       picture: 'http://example.com/janedoe/me.jpg'
     }));
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -814,7 +815,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should authenticate request with application-supplied state
-  
+
   it('should fail request when user denies the request', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -828,7 +829,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -844,7 +845,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should fail request when user denies the request
-  
+
   it('should forbid request when issuer claim does not match identifier of OpenID provider', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -858,7 +859,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600,
@@ -874,7 +875,7 @@ describe('Strategy', function() {
         secret: 'keyboard cat',
       })
     });
-    
+
     sinon.stub(strategy._oauth2, 'get').yieldsAsync(null, JSON.stringify({
       sub: '248289761001',
       name: 'Jane Doe',
@@ -884,7 +885,7 @@ describe('Strategy', function() {
       email: 'janedoe@example.com',
       picture: 'http://example.com/janedoe/me.jpg'
     }));
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -906,7 +907,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should forbid request when issuer claim does not match identifier of OpenID provider
-  
+
   it('should forbid request when audience claim does not contain the client ID value', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -920,7 +921,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600,
@@ -936,7 +937,7 @@ describe('Strategy', function() {
         secret: 'keyboard cat',
       })
     });
-    
+
     sinon.stub(strategy._oauth2, 'get').yieldsAsync(null, JSON.stringify({
       sub: '248289761001',
       name: 'Jane Doe',
@@ -946,7 +947,7 @@ describe('Strategy', function() {
       email: 'janedoe@example.com',
       picture: 'http://example.com/janedoe/me.jpg'
     }));
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -968,7 +969,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should forbid request when audience claim does not contain the client ID value
-  
+
   it('should forbid request when audience claim is a single string that does not contain the client ID value', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -982,7 +983,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600,
@@ -998,7 +999,7 @@ describe('Strategy', function() {
         secret: 'keyboard cat',
       })
     });
-    
+
     sinon.stub(strategy._oauth2, 'get').yieldsAsync(null, JSON.stringify({
       sub: '248289761001',
       name: 'Jane Doe',
@@ -1008,7 +1009,7 @@ describe('Strategy', function() {
       email: 'janedoe@example.com',
       picture: 'http://example.com/janedoe/me.jpg'
     }));
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -1030,7 +1031,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should forbid request when audience claim is a single string that does not contain the client ID value
-  
+
   it('should forbid request when audience claim contains the client ID value but authorized party claim is not present', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -1044,7 +1045,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600,
@@ -1060,7 +1061,7 @@ describe('Strategy', function() {
         secret: 'keyboard cat',
       })
     });
-    
+
     sinon.stub(strategy._oauth2, 'get').yieldsAsync(null, JSON.stringify({
       sub: '248289761001',
       name: 'Jane Doe',
@@ -1070,7 +1071,7 @@ describe('Strategy', function() {
       email: 'janedoe@example.com',
       picture: 'http://example.com/janedoe/me.jpg'
     }));
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -1092,7 +1093,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should forbid request when audience claim contains the client ID value but authorized party claim is not present
-  
+
   it('should forbid request when authorized party claim does not match client ID', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -1106,7 +1107,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600,
@@ -1123,7 +1124,7 @@ describe('Strategy', function() {
         secret: 'keyboard cat',
       })
     });
-    
+
     sinon.stub(strategy._oauth2, 'get').yieldsAsync(null, JSON.stringify({
       sub: '248289761001',
       name: 'Jane Doe',
@@ -1133,7 +1134,7 @@ describe('Strategy', function() {
       email: 'janedoe@example.com',
       picture: 'http://example.com/janedoe/me.jpg'
     }));
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -1155,7 +1156,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should forbid request when audience claim contain the client ID value but authorized party claim is not present
-  
+
   it('should forbid request when ID token is expired', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -1169,7 +1170,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600,
@@ -1185,7 +1186,7 @@ describe('Strategy', function() {
         secret: 'keyboard cat',
       })
     });
-    
+
     sinon.stub(strategy._oauth2, 'get').yieldsAsync(null, JSON.stringify({
       sub: '248289761001',
       name: 'Jane Doe',
@@ -1195,7 +1196,7 @@ describe('Strategy', function() {
       email: 'janedoe@example.com',
       picture: 'http://example.com/janedoe/me.jpg'
     }));
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -1218,7 +1219,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should forbid request when ID token is expired
-  
+
   it('should forbid request when ID token is exactly expired', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -1232,7 +1233,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600,
@@ -1248,7 +1249,7 @@ describe('Strategy', function() {
         secret: 'keyboard cat',
       })
     });
-    
+
     sinon.stub(strategy._oauth2, 'get').yieldsAsync(null, JSON.stringify({
       sub: '248289761001',
       name: 'Jane Doe',
@@ -1258,7 +1259,7 @@ describe('Strategy', function() {
       email: 'janedoe@example.com',
       picture: 'http://example.com/janedoe/me.jpg'
     }));
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -1281,7 +1282,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should forbid request when ID token is exactly expired
-  
+
   it('should forbid request when nonce claim is not present but value was sent in authentication request', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -1295,7 +1296,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600,
@@ -1311,7 +1312,7 @@ describe('Strategy', function() {
         secret: 'keyboard cat',
       })
     });
-    
+
     sinon.stub(strategy._oauth2, 'get').yieldsAsync(null, JSON.stringify({
       sub: '248289761001',
       name: 'Jane Doe',
@@ -1321,7 +1322,7 @@ describe('Strategy', function() {
       email: 'janedoe@example.com',
       picture: 'http://example.com/janedoe/me.jpg'
     }));
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -1344,7 +1345,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should forbid request when nonce claim is not present but value was sent in authentication request
-  
+
   it('should forbid request when value of nonce claim is not the same as that sent in authentication request', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -1358,7 +1359,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600,
@@ -1375,7 +1376,7 @@ describe('Strategy', function() {
         secret: 'keyboard cat',
       })
     });
-    
+
     sinon.stub(strategy._oauth2, 'get').yieldsAsync(null, JSON.stringify({
       sub: '248289761001',
       name: 'Jane Doe',
@@ -1385,7 +1386,7 @@ describe('Strategy', function() {
       email: 'janedoe@example.com',
       picture: 'http://example.com/janedoe/me.jpg'
     }));
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -1408,7 +1409,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should forbid request when value of nonce claim is not the same as that sent in authentication request
-  
+
   it('should forbid request when too much time has elapsed since last authentication', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -1422,7 +1423,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600,
@@ -1439,7 +1440,7 @@ describe('Strategy', function() {
         secret: 'keyboard cat',
       })
     });
-    
+
     sinon.stub(strategy._oauth2, 'get').yieldsAsync(null, JSON.stringify({
       sub: '248289761001',
       name: 'Jane Doe',
@@ -1449,7 +1450,7 @@ describe('Strategy', function() {
       email: 'janedoe@example.com',
       picture: 'http://example.com/janedoe/me.jpg'
     }));
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -1473,7 +1474,7 @@ describe('Strategy', function() {
       .error(done)
       .authenticate();
   }); // should forbid request when too much time has elapsed since last authentication
-  
+
   it('should error when state store yeilds an error attempting to store state', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -1487,9 +1488,9 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._stateStore, 'store').yieldsAsync(new Error('something went wrong'));
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.session = {};
@@ -1502,7 +1503,7 @@ describe('Strategy', function() {
       })
       .authenticate();
   }); // should error when state store yeilds an error attempting to store state
-  
+
   it('should error when state store throws an error attempting to store state', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -1516,9 +1517,9 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._stateStore, 'store').throws(new Error('something went wrong'));
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.session = {};
@@ -1531,7 +1532,7 @@ describe('Strategy', function() {
       })
       .authenticate();
   }); // should error when state store throws an error attempting to store state
-  
+
   it('should error when state store does not yield state', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -1545,9 +1546,9 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._stateStore, 'store').yields(null);
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.session = {};
@@ -1560,7 +1561,7 @@ describe('Strategy', function() {
       })
       .authenticate();
   }); // should error when state store does not yield state
-  
+
   it('should error when receiving an authentication error response', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -1574,7 +1575,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -1592,7 +1593,7 @@ describe('Strategy', function() {
       })
       .authenticate();
   }); // should error when receiving an authentication error response
-  
+
   it('should error when receiving a token error response', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -1606,9 +1607,9 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync({ statusCode: 400, data: '{"error":"invalid_grant","error_description":"The authorization code is invalid, expired, or revoked."}' });
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -1632,7 +1633,7 @@ describe('Strategy', function() {
       })
       .authenticate();
   }); // should error when receiving a token error response
-  
+
   it('should error when receiving an error with text content from token endpoint', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -1646,9 +1647,9 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync({ statusCode: 500, data: 'something went wrong' });
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -1672,7 +1673,7 @@ describe('Strategy', function() {
       })
       .authenticate();
   }); // should error when receiving an error with text content from token endpoint
-  
+
   it('should error when receiving an internal error from token endpoint', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -1686,9 +1687,9 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(new Error('something went wrong'));
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -1711,7 +1712,7 @@ describe('Strategy', function() {
       })
       .authenticate();
   }); // should error when receiving an internal error from token endpoint
-  
+
   it('should error when token response does not include an ID token', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -1725,12 +1726,12 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600
     });
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -1751,7 +1752,7 @@ describe('Strategy', function() {
       })
       .authenticate();
   }); // should error when token response does not include an ID token
-  
+
   it('should error when ID token is missing issuer claim', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -1765,7 +1766,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600,
@@ -1780,7 +1781,7 @@ describe('Strategy', function() {
         secret: 'keyboard cat',
       })
     });
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -1801,7 +1802,7 @@ describe('Strategy', function() {
       })
       .authenticate();
   }); // should error when ID token is missing issuer claim
-  
+
   it('should error when ID token is missing subject claim', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -1815,7 +1816,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600,
@@ -1830,7 +1831,7 @@ describe('Strategy', function() {
         secret: 'keyboard cat',
       })
     });
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -1851,7 +1852,7 @@ describe('Strategy', function() {
       })
       .authenticate();
   }); // should error when ID token is missing subject claim
-  
+
   it('should error when ID token is missing audience claim', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -1865,7 +1866,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600,
@@ -1880,7 +1881,7 @@ describe('Strategy', function() {
         secret: 'keyboard cat',
       })
     });
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -1901,7 +1902,7 @@ describe('Strategy', function() {
       })
       .authenticate();
   }); // should error when ID token is missing audience claim
-  
+
   it('should error when ID token is missing expiration time claim', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -1915,7 +1916,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600,
@@ -1930,7 +1931,7 @@ describe('Strategy', function() {
         secret: 'keyboard cat',
       })
     });
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -1951,7 +1952,7 @@ describe('Strategy', function() {
       })
       .authenticate();
   }); // should error when ID token is missing expiration time claim
-  
+
   it('should error when ID token is missing issued at claim', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -1965,7 +1966,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600,
@@ -1980,7 +1981,7 @@ describe('Strategy', function() {
         secret: 'keyboard cat',
       })
     });
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -2001,7 +2002,7 @@ describe('Strategy', function() {
       })
       .authenticate();
   }); // should error when ID token is missing issued at claim
-  
+
   it('should error when ID token audience claim is not a string or array', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -2015,7 +2016,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600,
@@ -2031,7 +2032,7 @@ describe('Strategy', function() {
         secret: 'keyboard cat',
       })
     });
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -2052,7 +2053,7 @@ describe('Strategy', function() {
       })
       .authenticate();
   }); // should error when ID token audience claim is not a string or array
-  
+
   it('should error when userinfo request is unauthorized', function(done) {
     var strategy = new Strategy({
       issuer: 'https://server.example.com',
@@ -2067,7 +2068,7 @@ describe('Strategy', function() {
     function(iss, profile, cb) {
       throw new Error('verify function should not be called');
     });
-    
+
     sinon.stub(strategy._oauth2, 'getOAuthAccessToken').yieldsAsync(null, 'SlAV32hkKG', '8xLOxBtZp8', {
       token_type: 'Bearer',
       expires_in: 3600,
@@ -2083,9 +2084,9 @@ describe('Strategy', function() {
         secret: 'keyboard cat',
       })
     });
-    
+
     sinon.stub(strategy._oauth2, 'get').yieldsAsync({ statusCode: 401, data: '' });
-    
+
     chai.passport.use(strategy)
       .request(function(req) {
         req.query = {
@@ -2109,20 +2110,20 @@ describe('Strategy', function() {
       })
       .authenticate();
   }); // should error when userinfo request is unauthorized
-  
+
   it('should throw if constructed without a verify function', function() {
     expect(function() {
       new Strategy();
     }).to.throw(TypeError, 'OpenIDConnectStrategy requires a verify function');
   });
-  
+
   it('should throw if constructed without an issuer option', function() {
     expect(function() {
       new Strategy({
       }, function(){});
     }).to.throw(TypeError, 'OpenIDConnectStrategy requires an issuer option');
   });
-  
+
   it('should throw if constructed without an authorizationURL option', function() {
     expect(function() {
       new Strategy({
@@ -2130,7 +2131,7 @@ describe('Strategy', function() {
       }, function(){});
     }).to.throw(TypeError, 'OpenIDConnectStrategy requires an authorizationURL option');
   });
-  
+
   it('should throw if constructed without a tokenURL option', function() {
     expect(function() {
       new Strategy({
@@ -2139,7 +2140,7 @@ describe('Strategy', function() {
       }, function(){});
     }).to.throw(TypeError, 'OpenIDConnectStrategy requires a tokenURL option');
   });
-  
+
   it('should throw if constructed without a clientID option', function() {
     expect(function() {
       new Strategy({
@@ -2149,5 +2150,5 @@ describe('Strategy', function() {
       }, function(){});
     }).to.throw(TypeError, 'OpenIDConnectStrategy requires a clientID option');
   });
-  
+
 }); // Strategy
